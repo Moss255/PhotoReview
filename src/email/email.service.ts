@@ -59,9 +59,6 @@ export class EmailService {
                                     </td>
                                 </tr>
                             </table>
-                            
-                            <p style="margin: 0 0 15px 0;">If the button doesn't work, you can copy and paste the following URL into your browser:</p>
-                            <p style="margin: 0;">${url}</p>
 
                             <p style="margin: 15px 0 0 0;">Thank you.</p>
                         </td>
