@@ -8,6 +8,8 @@ WORKDIR /usr/src/app
 # We copy these first to leverage Docker's layer caching
 COPY package*.json ./
 
+RUN mkdir -p data/uploads
+
 # Install application dependencies
 RUN npm install
 

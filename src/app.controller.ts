@@ -26,7 +26,7 @@ export class AppController {
   @UseInterceptors(
     FileInterceptor('photo', {
       storage: diskStorage({
-        destination: './uploads',
+        destination: './data/uploads',
         filename: (req, file, cb) => {
           // You can customize the filename here
           const uniqueSuffix =

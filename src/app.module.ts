@@ -9,7 +9,7 @@ import { Photo } from './entities/photo.entity';
     TypeOrmModule.forFeature([Photo]),
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'database.sqlite', // The name of your database file
+      database: './data/database.sqlite', // The name of your database file
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // Auto-create tables (use with caution in production)
     }),
