@@ -34,6 +34,8 @@ COPY --from=build /usr/src/app/dist ./dist
 # Copy the Handlebars template files
 COPY --from=build /usr/src/app/views ./views
 
+RUN mkdir -p data/uploads
+
 # Expose the application port
 EXPOSE 3000
 
