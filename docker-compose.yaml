@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    restart: always
+    volumes:
+    - app_data:/usr/src/app/data
+
+volumes:
+  app_data:
