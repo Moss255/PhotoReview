@@ -1,23 +1,41 @@
-# Use the official Node.js image as the base
-FROM node:lts
+# --- Stage 1: Build stage ---
+FROM node:lts AS build
 
-# Set the working directory inside the container
+# Set the working directory
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json to the working directory
-# We copy these first to leverage Docker's layer caching
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-RUN mkdir -p data/uploads
-
-# Install application dependencies
+# Install dependencies
 RUN npm install
 
-# Copy the rest of the application source code
+# Copy all source code
 COPY . .
 
-# Expose the port your NestJS application listens on
+# Build the TypeScript application
+RUN npm run build
+
+# --- Stage 2: Production stage ---
+FROM node:lts
+
+# Set the working directory
+WORKDIR /usr/src/app
+
+# Copy package.json to the production image
+COPY --from=build /usr/src/app/package*.json ./
+
+# Install only production dependencies
+RUN npm install --only=production
+
+# Copy the compiled application from the build stage
+COPY --from=build /usr/src/app/dist ./dist
+
+# Copy the Handlebars template files
+COPY --from=build /usr/src/app/views ./views
+
+# Expose the application port
 EXPOSE 3000
 
-# Define the command to run your application
-CMD [ "npm", "run", "start:prod" ]
+# Start the application
+CMD [ "node", "dist/main.js" ]
