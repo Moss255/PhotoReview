@@ -26,8 +26,8 @@ export class EmailService {
     const personName = `${this.configService.get('PERSON_NAME')}`;
 
     const mailOptions = {
-      from: process.env.GMAIL_USERNAME,
-      to: 'jackhmoss@gmail.com', // The email address you want to send the notification to
+      from: this.configService.get('GMAIL_USERNAME'),
+      to: this.configService.get('TARGET_EMAIL'), // The email address you want to send the notification to
       subject: 'New Cursed Image for review',
       html: `
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
