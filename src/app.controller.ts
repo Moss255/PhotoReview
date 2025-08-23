@@ -5,6 +5,7 @@ import {
   Param,
   Post,
   Render,
+  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -13,16 +14,17 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { readFileSync } from 'fs';
 import { ReviewDto } from './dto/review.dto';
+import { Response } from 'express';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('upload')
+  @Get()
   @Render('upload')
   showUploadPhoto() {}
 
-  @Post('upload')
+  @Post()
   @UseInterceptors(
     FileInterceptor('photo', {
       storage: diskStorage({
@@ -37,7 +39,10 @@ export class AppController {
       }),
     }),
   )
-  async uploadPhoto(@UploadedFile() file: Express.Multer.File) {
+  async uploadPhoto(
+    @UploadedFile() file: Express.Multer.File,
+    @Res() res: Response,
+  ) {
     const id = crypto.randomUUID();
     const photo = await this.appService.create({
       id: id,
@@ -45,7 +50,7 @@ export class AppController {
       result: 'pending',
       mimetype: file.mimetype,
     });
-    return photo.id;
+    return res.redirect(`/status/${photo.id}`);
   }
 
   @Render('status')
